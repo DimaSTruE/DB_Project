@@ -31,8 +31,9 @@ namespace DB_Project
 
         private void t1Karcinologia_2_FormatDGV()
         {
+            dataGridView2.EnableHeadersVisualStyles = false;
             dataGridView2.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dataGridView2.DefaultCellStyle.SelectionBackColor = Color.White;
+            dataGridView2.DefaultCellStyle.SelectionBackColor = Color.Pink;
             dataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             dataGridView2.GridColor = Color.Black;
             dataGridView2.Columns[0].Width = 50;
