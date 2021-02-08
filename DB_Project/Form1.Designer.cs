@@ -51,20 +51,20 @@ namespace DB_Project
             this.вихідToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 30);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // таблиціБДToolStripMenuItem
             // 
             this.таблиціБДToolStripMenuItem.Name = "таблиціБДToolStripMenuItem";
-            this.таблиціБДToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
+            this.таблиціБДToolStripMenuItem.Size = new System.Drawing.Size(101, 26);
             this.таблиціБДToolStripMenuItem.Text = "Таблиці БД";
             // 
             // адмініструванняToolStripMenuItem
             // 
             this.адмініструванняToolStripMenuItem.Name = "адмініструванняToolStripMenuItem";
-            this.адмініструванняToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
+            this.адмініструванняToolStripMenuItem.Size = new System.Drawing.Size(140, 26);
             this.адмініструванняToolStripMenuItem.Text = "Адміністрування";
             // 
             // калькуляторToolStripMenuItem
@@ -73,7 +73,7 @@ namespace DB_Project
             this.калькулятор1ToolStripMenuItem,
             this.калькулятор2ToolStripMenuItem});
             this.калькуляторToolStripMenuItem.Name = "калькуляторToolStripMenuItem";
-            this.калькуляторToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
+            this.калькуляторToolStripMenuItem.Size = new System.Drawing.Size(110, 26);
             this.калькуляторToolStripMenuItem.Text = "Калькулятор";
             // 
             // калькулятор1ToolStripMenuItem
@@ -93,14 +93,14 @@ namespace DB_Project
             // проПрограмуToolStripMenuItem
             // 
             this.проПрограмуToolStripMenuItem.Name = "проПрограмуToolStripMenuItem";
-            this.проПрограмуToolStripMenuItem.Size = new System.Drawing.Size(124, 24);
+            this.проПрограмуToolStripMenuItem.Size = new System.Drawing.Size(124, 26);
             this.проПрограмуToolStripMenuItem.Text = "Про програму";
             this.проПрограмуToolStripMenuItem.Click += new System.EventHandler(this.проПрограмуToolStripMenuItem_Click);
             // 
             // вихідToolStripMenuItem
             // 
             this.вихідToolStripMenuItem.Name = "вихідToolStripMenuItem";
-            this.вихідToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
+            this.вихідToolStripMenuItem.Size = new System.Drawing.Size(60, 26);
             this.вихідToolStripMenuItem.Text = "Вихід";
             this.вихідToolStripMenuItem.Click += new System.EventHandler(this.вихідToolStripMenuItem_Click);
             // 
@@ -112,6 +112,7 @@ namespace DB_Project
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DataBase";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
