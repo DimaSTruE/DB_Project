@@ -28,6 +28,7 @@ namespace DB_Project
             t1Karcinologia_1_FormatDGV();
             bindingNavigator1.BindingSource = h.bs1;
 
+            h.bs1.Sort = dataGridView1.Columns[1].Name;
         }
 
         private void t1Karcinologia_1_FormatDGV()
@@ -107,6 +108,55 @@ namespace DB_Project
                     }
                 }
             }
+        }
+
+        private void btnFind_Click(object sender, EventArgs e)
+        {
+            if (btnFind.Checked)
+            {
+                txtBNV.Visible = true;
+                label1.Visible = true;
+                label1.Text = "Пошук:";
+                txtBNV.Focus();
+            }
+            else
+            {
+                txtBNV.Text = "";
+                txtBNV.Visible = false;
+                label1.Visible = false;
+                dataGridView1.ClearSelection();
+            }
+        }
+
+        private void txtBNV_TextChanged(object sender, EventArgs e)
+        {
+            if (btnFind.Checked)
+            {
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    dataGridView1.Rows[i].Selected = false; 
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (dataGridView1.Rows[i].Cells[j].Value != null)
+                        {
+                            if (dataGridView1.Rows[i].Cells[j].Value.ToString().Contains(txtBNV.Text))
+                            {
+                                dataGridView1.Rows[i].Selected = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void txtBNV_Leave(object sender, EventArgs e)
+        {
+            txtBNV.Visible = false;
+            txtBNV.Text = "";
+            label1.Visible = false;
+            dataGridView1.ClearSelection();
+            btnFind.Checked = false;
         }
     }
 }
