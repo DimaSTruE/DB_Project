@@ -39,5 +39,17 @@ namespace DB_Project
         {
             Application.Exit();
         }
+
+        private void karcinologiaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            t1Karcinologia_1 t1 = new t1Karcinologia_1();
+            t1.ShowDialog();
+        }
+
+        private void karcinologia2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            t1Karcinologia_2 t2 = new t1Karcinologia_2();
+            t2.ShowDialog();
+        }
     }
 }
