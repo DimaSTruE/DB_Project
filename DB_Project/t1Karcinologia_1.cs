@@ -22,6 +22,19 @@ namespace DB_Project
 
         private void t1Karcinologia_1_Load(object sender, EventArgs e)
         {
+            this.Height = 410;
+            DataTable minmaxValue = h.MyfunDt("SELECT MIN(id), MAX(id) FROM Karcinologia_1");
+            txtBEGIN.Text = minmaxValue.Rows[0][0].ToString();
+            txtEND.Text = minmaxValue.Rows[0][0].ToString();
+            //
+            minmaxValue = h.MyfunDt("SELECT DISTINCT VID FROM Karcinologia_1");
+            cmbVID.Items.Add("");
+            for (int i = 0; i < minmaxValue.Rows.Count; i++)
+            {
+                cmbVID.Items.Add(minmaxValue.Rows[i][0].ToString());
+            }
+            cmbVID.DropDownStyle = ComboBoxStyle.DropDownList;
+            /////////////////////////////////////////////////////////////
             h.bs1 = new BindingSource();
             h.bs1.DataSource = h.MyfunDt("SELECT * FROM Karcinologia_1");
             dataGridView1.DataSource = h.bs1;
@@ -157,6 +170,49 @@ namespace DB_Project
             label1.Visible = false;
             dataGridView1.ClearSelection();
             btnFind.Checked = false;
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            if (btnFilter.Checked)
+            {
+                this.Height = 560;
+                panel1.Visible = true;
+            }
+            else
+            {
+                panel1.Visible = false;
+                h.bs1.Filter = "";
+                this.Height = 410;
+            }
+        }
+
+        private void btnOkFilter_Click(object sender, EventArgs e)
+        {
+            string strFilter = "id > 0";
+            if ((txtBEGIN.Text != "") && (txtEND.Text != ""))
+            {
+                strFilter += " AND (id >= '" + int.Parse(txtBEGIN.Text) + "' AND id <= '" + int.Parse(txtEND.Text) + "') ";
+            }
+            else if ((txtBEGIN.Text == "") && (txtEND.Text != ""))
+            {
+                strFilter += " AND (id <= '" + int.Parse(txtEND.Text) + "') ";
+            }
+            else if ((txtBEGIN.Text != "") && (txtEND.Text == ""))
+            {
+                strFilter += " AND (id >= '" + int.Parse(txtBEGIN.Text) + "') ";
+            }
+
+            if (cmbVID.Text != "")
+            {
+                strFilter += " AND (VID LIKE '%" + cmbVID.Text + "%') ";
+            }
+            h.bs1.Filter = strFilter;
+        }
+
+        private void btnCancelFilter_Click(object sender, EventArgs e)
+        {
+            h.bs1.Filter = "";
         }
     }
 }
