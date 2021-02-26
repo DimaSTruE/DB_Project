@@ -23,9 +23,13 @@ namespace DB_Project
         private void t1Karcinologia_1_Load(object sender, EventArgs e)
         {
             this.Height = 410;
-            DataTable minmaxValue = h.MyfunDt("SELECT MIN(id), MAX(id) FROM Karcinologia_1");
-            txtBEGIN.Text = minmaxValue.Rows[0][0].ToString();
-            txtEND.Text = minmaxValue.Rows[0][0].ToString();
+            DataTable minmaxValue = h.MyfunDt("SELECT MIN(my_date), MAX(my_date) , " + "MIN(id), MAX(id) FROM Karcinologia_1");
+            //
+            dtpIn.Value = Convert.ToDateTime(minmaxValue.Rows[0][0].ToString());
+            dtpOut.Value = Convert.ToDateTime(minmaxValue.Rows[0][1].ToString());
+            //
+            txtBEGIN.Text = minmaxValue.Rows[0][2].ToString();
+            txtEND.Text = minmaxValue.Rows[0][3].ToString();
             //
             minmaxValue = h.MyfunDt("SELECT DISTINCT VID FROM Karcinologia_1");
             cmbVID.Items.Add("");
@@ -62,7 +66,10 @@ namespace DB_Project
             dataGridView1.Columns[3].Width = 95;
             dataGridView1.Columns[3].HeaderText = "Тип";
             dataGridView1.Columns[3].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            
+            dataGridView1.Columns[4].Width = 75;
+            dataGridView1.Columns[4].HeaderText = "Дата";
+            dataGridView1.Columns[4].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             if (int.Parse(h.typeUser) > 2)
             {
                 dataGridView1.ReadOnly = true;
@@ -190,6 +197,10 @@ namespace DB_Project
         private void btnOkFilter_Click(object sender, EventArgs e)
         {
             string strFilter = "id > 0";
+
+            strFilter += " AND (my_date >= '" + dtpIn.Value.ToString("yyyy-MM-dd") + "'" +
+                " AND my_date <= '" + dtpOut.Value.ToString("yyyy-MM-dd") + "') ";
+            //
             if ((txtBEGIN.Text != "") && (txtEND.Text != ""))
             {
                 strFilter += " AND (id >= '" + int.Parse(txtBEGIN.Text) + "' AND id <= '" + int.Parse(txtEND.Text) + "') ";
