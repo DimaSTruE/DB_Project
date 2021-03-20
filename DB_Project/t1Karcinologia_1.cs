@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace DB_Project
 {
@@ -224,6 +225,62 @@ namespace DB_Project
         private void btnCancelFilter_Click(object sender, EventArgs e)
         {
             h.bs1.Filter = "";
+        }
+
+        private void AddNew_Click(object sender, EventArgs e)
+        {
+            Table1_Insert f1add = new Table1_Insert();
+            f1add.ShowDialog();
+            h.bs1.DataSource = h.MyfunDt("SELECT * FROM Karcinologia_1");
+            dataGridView1.DataSource = h.bs1;
+        }
+
+        private void Delete_Click(object sender, EventArgs e)
+        {
+            //Знаходимо значення ключового поля поточного запису
+            h.curVal0 = dataGridView1[0, dataGridView1.CurrentRow.Index].Value.ToString();
+            h.keyName = dataGridView1.Columns[0].Name;
+
+            Table1_Delete f3 = new Table1_Delete();
+            f3.ShowDialog();
+
+            //Оновлюємо джерело даних застосунку клієнта
+            h.bs1.DataSource = h.MyfunDt("SELECT * FROM Karcinologia_1");
+            dataGridView1.DataSource = h.bs1; //Оновлюємо DataGridView
+        }
+
+        private void dataGridView1_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            int curColidx = dataGridView1.CurrentCellAddress.X; // Індекс стовпця поточної клітинки
+            int curRowidx = dataGridView1.CurrentCellAddress.Y; // Індекс рядка поточної клітинки
+            string curColName0 = dataGridView1.Columns[0].Name; // Назва стовпця ключового поля
+            string curColName = dataGridView1.Columns[curColidx].Name; // Назва поточного стовпця
+            h.curVal0 = dataGridView1[0, curRowidx].Value.ToString(); // Значення клітинки ключового поля поточного рядка
+
+            string newCurCellVal = e.Value.ToString(); // Нове значення поточної клітинки
+
+            if (curColName == "NAME" || curColName == "VID" || curColName == "TYPE")
+            {
+                newCurCellVal = "'" + newCurCellVal + "'"; // Якщо поле текстове, беремо в лапки
+            }
+            string sqlStr = "UPDATE Karcinologia_1 SET " + curColName + " = " + newCurCellVal +
+                " WHERE " + curColName0 + " = " + h.curVal0;
+
+            using (MySqlConnection con = new MySqlConnection(h.ConStr))
+            {
+                MySqlCommand cmd = new MySqlCommand(sqlStr, con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        private void Edit_Click(object sender, EventArgs e)
+        {
+            Table1_Update f4 = new Table1_Update();
+            f4.ShowDialog();
+            h.bs1.DataSource = h.MyfunDt("SELECT * FROM Karcinologia_1");
+            dataGridView1.DataSource = h.bs1; //Оновлюємо DataGridView
         }
     }
 }
