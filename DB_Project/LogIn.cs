@@ -151,6 +151,7 @@ namespace DB_Project
 
         public static string curVal0 { get; set; }
         public static string keyName { get; set; }
+        public static string pathToPhoto { get; set; }
 
         public static BindingSource bs1 { get; set; }
         public static DataTable MyfunDt(string commandString)

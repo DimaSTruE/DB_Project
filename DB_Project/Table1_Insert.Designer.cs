@@ -41,6 +41,12 @@ namespace DB_Project
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.Tabl1InsAdd = new System.Windows.Forms.Button();
             this.Tabl1InsCancel = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -125,7 +131,7 @@ namespace DB_Project
             // 
             // Tabl1InsAdd
             // 
-            this.Tabl1InsAdd.Location = new System.Drawing.Point(35, 182);
+            this.Tabl1InsAdd.Location = new System.Drawing.Point(12, 330);
             this.Tabl1InsAdd.Name = "Tabl1InsAdd";
             this.Tabl1InsAdd.Size = new System.Drawing.Size(75, 23);
             this.Tabl1InsAdd.TabIndex = 10;
@@ -135,7 +141,7 @@ namespace DB_Project
             // 
             // Tabl1InsCancel
             // 
-            this.Tabl1InsCancel.Location = new System.Drawing.Point(260, 182);
+            this.Tabl1InsCancel.Location = new System.Drawing.Point(260, 330);
             this.Tabl1InsCancel.Name = "Tabl1InsCancel";
             this.Tabl1InsCancel.Size = new System.Drawing.Size(75, 23);
             this.Tabl1InsCancel.TabIndex = 11;
@@ -143,11 +149,51 @@ namespace DB_Project
             this.Tabl1InsCancel.UseVisualStyleBackColor = true;
             this.Tabl1InsCancel.Click += new System.EventHandler(this.Tabl1InsCancel_Click);
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Location = new System.Drawing.Point(88, 142);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(247, 182);
+            this.panel1.TabIndex = 12;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(12, 13);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(30, 192);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Фото";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 208);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "Вибрати";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Table1_Insert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(347, 217);
+            this.ClientSize = new System.Drawing.Size(347, 365);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.Tabl1InsCancel);
             this.Controls.Add(this.Tabl1InsAdd);
             this.Controls.Add(this.textBox5);
@@ -163,6 +209,10 @@ namespace DB_Project
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "Table1_Insert";
             this.Text = "Додавання записів у таблицю Karcinologia";
+            this.Load += new System.EventHandler(this.Table1_Insert_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,5 +232,9 @@ namespace DB_Project
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Button Tabl1InsAdd;
         private System.Windows.Forms.Button Tabl1InsCancel;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button1;
     }
 }

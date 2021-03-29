@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace DB_Project
             t1Karcinologia_1_FormatDGV();
             bindingNavigator1.BindingSource = h.bs1;
 
-            h.bs1.Sort = dataGridView1.Columns[1].Name;
+            //h.bs1.Sort = dataGridView1.Columns[1].Name;
         }
 
         private void t1Karcinologia_1_FormatDGV()
@@ -281,6 +282,22 @@ namespace DB_Project
             f4.ShowDialog();
             h.bs1.DataSource = h.MyfunDt("SELECT * FROM Karcinologia_1");
             dataGridView1.DataSource = h.bs1; //Оновлюємо DataGridView
+        }
+
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            int rIndx = dataGridView1.CurrentCell.RowIndex;
+            if (rIndx < dataGridView1.RowCount - 1)
+            {
+                byte[] a = (byte[])dataGridView1.Rows[rIndx].Cells[5].Value;
+                MemoryStream memImage = new MemoryStream(a);
+                pictureBox1.Image = Image.FromStream(memImage);
+                memImage.Close();
+            }
+            else
+            {
+                pictureBox1.Image = null; //при виході за межі записів
+            }
         }
     }
 }
