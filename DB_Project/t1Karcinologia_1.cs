@@ -9,14 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Data.OleDb;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DB_Project
 {
     public partial class t1Karcinologia_1 : Form
     {
+        DataTable dt;
         int rowEdit = -1;
         int colEdit = -1;
-
         public t1Karcinologia_1()
         {
             InitializeComponent();
@@ -48,6 +50,7 @@ namespace DB_Project
             bindingNavigator1.BindingSource = h.bs1;
 
             //h.bs1.Sort = dataGridView1.Columns[1].Name;
+            dt = (DataTable)h.bs1.DataSource;
         }
 
         private void t1Karcinologia_1_FormatDGV()
@@ -298,6 +301,210 @@ namespace DB_Project
             {
                 pictureBox1.Image = null; //при виході за межі записів
             }
+        }
+
+        private void btnOLE_DB_Click(object sender, EventArgs e)
+        {
+            //Задаємо шлях збереження файлу
+            string fileName = Application.StartupPath + @"\Report\File_xls.xls";
+            //Якщо файл інсує,тоді його витираємо
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+            //Записуємо рядок з'єднання
+            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;" +
+                " Data Source=" + fileName + "; " +
+                "Extended Properties = \"Excel 8.0; CharacterSet=1251; HDR=NO\"";
+            //Записуємо команду створення таблиці Excel
+            string commandCreateoldb = "CREATE TABLE [MySheet]" +
+                " ([" + dt.Columns[0].ColumnName + "] int";
+            for (int i = 1; i < dt.Columns.Count; i++)
+            {
+                commandCreateoldb += ", [" + dt.Columns[i].ColumnName + "] string";
+            }
+            commandCreateoldb += ")";
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                using (OleDbCommand cmd = new OleDbCommand(commandCreateoldb, conn))
+                {
+                    try
+                    {
+                        cmd.ExecuteNonQuery(); // Створення таблиці Excel
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            cmd.CommandText = "insert into [MySheet$] values (" + Convert.ToString(dt.Rows[i][0]);
+                            for (int j = i; j < (dt.Columns.Count); j++)
+                            {
+                                if (dt.Columns[j].DataType.ToString() == "System.String")
+                                {
+                                    cmd.CommandText += ", '" + Convert.ToString(dt.Rows[i][j]) + "'";
+                                }
+                                else if (dt.Columns[j].DataType.ToString() == "System.Int32")
+                                {
+                                    cmd.CommandText += ", '" + Convert.ToInt32(dt.Rows[i][j]) + "'";
+                                }
+                                else if (dt.Columns[j].DataType.ToString() == "System.DateTime")
+                                {
+                                    cmd.CommandText += ", '" + Convert.ToDateTime(dt.Rows[i][j]) + "'";
+                                }
+                                else
+                                {
+                                    cmd.CommandText += ", 'NULL'";
+                                }
+                            }
+                            cmd.CommandText += ")";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Таблиця MySheet уже існує!");
+                    }
+                }
+                conn.Close();
+            }
+            MessageBox.Show("File 'File_xls.xls' is created!");
+        }
+
+        private void btnStream_Click(object sender, EventArgs e)
+        {
+            //Вивід у файл потоками
+            var ec1251 = Encoding.GetEncoding(1251);
+            //Визначаємо вибране у radioButton розширення файлу
+            string extend;
+            if (radioButton1.Checked)
+            {
+                extend = "tsv";
+            }
+            else if (radioButton2.Checked)
+            {
+                extend = "doc";
+            }
+            else if (radioButton3.Checked)
+            {
+                extend = "xls";
+            }
+            else
+            {
+                extend = "txt";
+            }
+            //Задаємо шлях збереження файлу
+            string path = Application.StartupPath + @"\Report\";
+            string filePath = path + "File_2" + extend + "." + extend;
+            //Оголошуємо потік
+            StreamWriter wr = new StreamWriter(filePath, false, encoding: ec1251);
+
+            //Виводимо dt у файл
+            try
+            {
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    wr.Write(dt.Columns[i].ToString().ToUpper() + "\t");
+                }
+                wr.WriteLine();
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        if (dt.Rows[i][j] != null)
+                        {
+                            wr.Write(Convert.ToString(dt.Rows[i][j]) + "\t");
+                        }
+                        else
+                        {
+                            wr.Write("\t");
+                        }
+                    }
+                    wr.WriteLine();
+                }
+                wr.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            MessageBox.Show("File_" + extend + "." + extend + " is created");
+        }
+
+        private void btnCom_Click(object sender, EventArgs e)
+        {
+            //Задаємо шлях збереження файлу
+            string fileName = Application.StartupPath + @"\Report\File3_xls.xls";
+
+            Excel.Application excel = new Excel.Application();//Створюємо COM-об'єкт Excel
+            excel.SheetsInNewWorkbook = 2;//Кількість аркушів в книзі Excel;
+            excel.Workbooks.Add(Type.Missing);//Додаємо книгу
+            Excel.Workbook workbook = excel.Workbooks[1];//Отримуємо посилання на першу відкриту книгу
+            Excel.Worksheet sheet = workbook.Worksheets.get_Item(1);//Отримуємо посилання на перший аркуш
+            sheet.Name = "Карцинологія";//Змінюємо назву аркуша
+
+            //Виводимо назви полів
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                sheet.Cells[1, j + 1].Value = dt.Columns[j].ColumnName;
+            }
+            //Виводимо записи
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    if (dt.Columns[j].DataType.ToString() == "System.Byte[]")
+                    {
+                        sheet.Cells[i + 2, j + 1].Value = "NULL";
+                    }
+                    else
+                    {
+                        sheet.Cells[i + 2, j + 1].Value = dt.Rows[i][j];
+                    }
+                }
+            }
+            //Форматуємо аркуш Excel
+            format_File3(sheet);
+
+            excel.DisplayAlerts = false;
+            excel.Application.ActiveWorkbook.SaveAs(fileName, Excel.XlSaveAsAccessMode.xlNoChange);
+            excel.Quit();
+            MessageBox.Show("Файл 'File3_xls.xls' створено");
+        }
+        private void format_File3(Excel.Worksheet sheet)
+        {
+            int r1 = 1;
+            int c1 = 1;
+            int r2 = dt.Rows.Count + 1;
+            int c2 = dt.Columns.Count;
+
+            Excel.Range range0 = (Excel.Range)sheet.Range[sheet.Cells[9, 2], sheet.Cells[9, 2]];
+            Excel.Range range1 = (Excel.Range)sheet.Range[sheet.Cells[r1, c1], sheet.Cells[r2, c2]];
+            Excel.Range range2 = (Excel.Range)sheet.Range[sheet.Cells[10, 1], sheet.Cells[10, 5]];
+
+            range1.Font.Background = true; //Жирний шрифт
+            range1.Font.Size = 12; //Розмір 20
+            range1.Font.Color = ColorTranslator.ToOle(Color.Black);//Колір-чорний
+            range1.Font.Name = "Times New Roman";//Шрифт
+
+            range1.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;//Рамка лінія
+            range1.Borders.Weight = Excel.XlBorderWeight.xlThin;//Тонка
+            range1.Borders.Color = ColorTranslator.ToOle(Color.Pink);
+
+            //Вирівнювання в діапазоні
+            range1.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            range1.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+
+            //Ширина і висота клітинки Height i Width
+            range1.ColumnWidth = 20;
+            range0.RowHeight = 35;
+
+            range1.EntireColumn.AutoFit();//Авто ширина і висота
+            range1.EntireRow.AutoFit();
+
+            //Колір заливки
+            range1.Interior.Color = ColorTranslator.ToOle(Color.Red);
+            range2.Merge(Type.Missing);//Об'єднання клітин діапазону
         }
     }
 }

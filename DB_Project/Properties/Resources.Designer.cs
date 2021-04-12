@@ -73,6 +73,16 @@ namespace DB_Project.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _1_2841_64x641 {
+            get {
+                object obj = ResourceManager.GetObject("1_2841-64x641", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap plus_64x64 {
             get {
                 object obj = ResourceManager.GetObject("plus-64x64", resourceCulture);
@@ -83,9 +93,59 @@ namespace DB_Project.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap plus_64x641 {
+            get {
+                object obj = ResourceManager.GetObject("plus-64x641", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap plus_64x642 {
+            get {
+                object obj = ResourceManager.GetObject("plus-64x642", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap plus_64x643 {
+            get {
+                object obj = ResourceManager.GetObject("plus-64x643", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap remove_64x64 {
             get {
                 object obj = ResourceManager.GetObject("remove-64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap remove_64x641 {
+            get {
+                object obj = ResourceManager.GetObject("remove-64x641", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap remove_64x642 {
+            get {
+                object obj = ResourceManager.GetObject("remove-64x642", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
