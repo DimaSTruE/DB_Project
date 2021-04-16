@@ -449,7 +449,7 @@ namespace DB_Project
                 sheet.Cells[1, j + 1].Value = dt.Columns[j].ColumnName;
             }
             //Виводимо записи
-            for (int i = 0; i < dt.Columns.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
@@ -480,7 +480,7 @@ namespace DB_Project
 
             Excel.Range range0 = (Excel.Range)sheet.Range[sheet.Cells[9, 2], sheet.Cells[9, 2]];
             Excel.Range range1 = (Excel.Range)sheet.Range[sheet.Cells[r1, c1], sheet.Cells[r2, c2]];
-            Excel.Range range2 = (Excel.Range)sheet.Range[sheet.Cells[10, 1], sheet.Cells[10, 5]];
+            Excel.Range range2 = (Excel.Range)sheet.Range[sheet.Cells[10, 10], sheet.Cells[10, 10]];
 
             range1.Font.Background = true; //Жирний шрифт
             range1.Font.Size = 12; //Розмір 20
@@ -505,6 +505,48 @@ namespace DB_Project
             //Колір заливки
             range1.Interior.Color = ColorTranslator.ToOle(Color.Red);
             range2.Merge(Type.Missing);//Об'єднання клітин діапазону
+        }
+
+        private void btnXML_Click(object sender, EventArgs e)
+        {
+            //Задаємо шлях збереження файлу
+            string fileName = Application.StartupPath + @"\Report\File4_xls.xls";
+
+            Excel.Application excel = new Excel.Application();//Створюємо COM-об'єкт Excel
+            excel.SheetsInNewWorkbook = 2;//Кількість аркушів в книзі Excel;
+            excel.Workbooks.Add(Type.Missing);//Додаємо книгу
+            Excel.Workbook workbook = excel.Workbooks[1];//Отримуємо посилання на першу відкриту книгу
+            Excel.Worksheet sheet = workbook.Worksheets.get_Item(1);//Отримуємо посилання на перший аркуш
+            sheet.Name = "Карцинологія";//Змінюємо назву аркуша
+
+            //Виводимо назви полів
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                sheet.Cells[1, j + 1].Value = dt.Columns[j].ColumnName;
+            }
+            //Виводимо записи
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    if (dt.Columns[j].DataType.ToString() == "System.Byte[]")
+                    {
+                        sheet.Cells[i + 2, j + 1].Value = "NULL";
+                    }
+                    else
+                    {
+                        sheet.Cells[i + 2, j + 1].Value = dt.Rows[i][j];
+                    }
+                }
+            }
+            //Форматуємо аркуш Excel
+            format_File3(sheet);
+
+            excel.DisplayAlerts = false;
+            excel.Application.ActiveWorkbook.SaveAs(fileName, Excel.XlSaveAsAccessMode.xlNoChange);
+            excel.Quit();
+            MessageBox.Show("Файл 'File4_xls.xls' створено");
+            dt.WriteXml("MyDB.xml",XmlWriteMode.WriteSchema);
         }
     }
 }
